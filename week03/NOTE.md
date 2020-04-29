@@ -10,9 +10,15 @@
 ECMA262标准里无法实现的对象有：Bound function, Array, String, Arguments, Integer-Indexed, Module Namespace, Immutable Prototype
 
 Bound function：和普通function不同，没有词法上的上下文，仅作为一个原函数的wrapper而存在。
+
 Array：Array的length属性无法手动修改，而是根据最大下标自动变化。
+
 String：有一个自带属性length，无法手动修改，根据string长度自动变化。
+
 Arguments：数组下标由调用函数的参数列表决定。
+
 Integer-Indexed：下标运算与正常不同，和内存中的数据分布绑定。
+
 Module Namespace：用于暴露从JS模块导出的绑定，并且无法扩展。其中有多个键值对，每个对应该模块的一个binding name。每个键值对又有三个属性：[[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: false。
+
 Immutable Prototype：例如Object.prototype就是一个Immutable prototype。它是所有对象的默认原型，因此没有原型。
