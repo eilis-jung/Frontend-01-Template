@@ -1,236 +1,82 @@
-function match(string) {
-    for (let c of string) {
-        if (c == "a") {
-            return true;
+function getLPS(str) {
+    res = [];
+
+    for (let x in str) {
+        let prefixes = [];
+        let suffixes = [];
+        let substr = str.slice(0, Number(x) + 1);
+        for (let y in substr) {
+            let prefix = substr.slice(0, Number(y));
+            let suffix = substr.slice(Number(y), substr.length);
+            if (prefix.length > 0 && prefix != substr)
+                prefixes.push(prefix);
+            if (suffix.length > 0 && suffix != substr)
+                suffixes.push(suffix);
         }
-        return false;
+
+        let lps = [];
+
+        for (let x of prefixes) {
+            let isLps = suffixes.find((y)=>{
+                return y == x;
+            });
+            if (isLps) {
+                lps.push(x);
+            }
+        }
+        res.push(lps.length);
     }
+    console.log(res);
+    return res;
 }
-console.log(match("I am groot"));
 
-
-function match(string) {
-    let foundA = false;
-    for(let c of string) {
-        if (c == "a") 
-            foundA = true;
-        else if (foundA && c == "b")
-            return true;
-        else
-           foundA = false;
+function KMPsearch(str, pat, lpsArr) {
+    var lpsArr = getLPS(pat);
+    let ind = 0;
+    let ind2 = 0;
+    let res = [];
+    while (ind < str.length) {
+        if(str[ind] == pat[ind2]) {
+            if (ind2 == pat.length - 1) {
+                res.push(ind - pat.length + 1);
+                ind2 = lpsArr[ind2 - 1];
+            }
+            ind ++;
+            ind2 ++;
+        } else {
+            if (ind2 > 0) {
+                ind2 = lpsArr[ind2 - 1];
+            } else {
+                ind ++;
+            }
+        }
     }
-    return false;
+
+    return res;
 }
-console.log(match("I acbm groot"));
 
-
-function match(string) {
-    let foundA = false;
-    let foundB = false;
-    let foundC = false;
-    let foundD = false;
-    let foundE = false;
-
-    for(let c of string) {
-        if (c == "a") 
-            foundA = true;
-        else if (foundA && c == "b")
-            return foundB = true;
-        else if (foundB && c == "c")
-            return foundC = true;
-        else if (foundC && c == "d")
-            return foundD = true;
-        else if (foundD && c == "e")
-            return foundE = true;
-        else if (foundE && c == "f")
-            return true;
-        else
-           foundA = false;
-           foundB = false;
-           foundC = false;
-           foundD = false;
-           foundE = false;
-    }
-    return false;
-}
-console.log(match("I abm groot"));
+var pat = "abaab";
+var des = "abaabaab";
+var res =  KMPsearch(des, pat);
 
 
 
-function match(string) {
-    let state = start;
-    for(let c of string) {
-        console.log(c);
-        state = state(c);
-    }
-    return state === encodeURIComponent;
-}
-function start(c) {
-    if (c === "a") {
-        return foundA;
-    }else{
-        return start;
-    }
-}
-function end(c) {
-    return end;
-}
-function foundA(c) {
-    if (c === "b") {
-        return foundB;
-    }else {
-        return start(c);
-    }
-}
-function foundB(c) {
-    if (c === "c") {
-        return end;
-    }else {
-        return start(c);
-    }
-}
-function foundC(c) {
-    if (c === "d") {
-        return foundD;
-    }else {
-        return start(c);
-    }
-}
-function foundD(c) {
-    if (c === "e") {
-        return foundE;
-    } else {
-        return start(c);
-    }
-}
+// function getTFTable(pat) {
+//     var res = [];
+//     for (let x = 0; x <= pat.length; x++) {
+//         let tempRes = {};
+//         for (let y = 0; y < pat.length; y++) {
+//             tempRes[pat[y]] = 0;
+//         }
+//         res.push(tempRes);
+//     }
 
-function foundE(c) {
-    if (c === "f") {
-        return end;
-    } else {
-        return start(c);
-    }
-}
-console.log(match("aabc"));
+//     for (let x = 0; x < pat.length; x++) {
+//         res[x][pat[x]] = x + 1;
+//     }
 
+//     console.log(res);
+    
+// }
 
-
-function match(string) {
-    let state = start;
-    for(let c of string) {
-        state = state(c);
-    }
-    return state === end;
-}
-
-function start(c) {
-    if (c === "a") {
-        return foundA;
-    } else {
-        return start;
-    }
-}
-function end(c) {
-    return end;
-}
-
-function foundA(c) {
-    if (c === "b") {
-        return foundB;
-    }else {
-        return start;
-    }
-}
-function foundB(c) {
-    if (c === "c") {
-        return foundC;
-    }else {
-        return start;
-    }
-}
-function foundC(c) {
-    if (c === "a") {
-        return foundA2;
-    }else {
-        return start;
-    }
-}
-function foundA2(c) {
-    if (c === "b") {
-        return foundB2;
-    } else {
-        return start;
-    }
-}
-
-function foundB2(c) {
-    if (c === "x") {
-        return end;
-    } else if(c === "c") {
-        return foundC;
-    } else {
-        return start;
-    }
-}
-console.log(match("abcabcabx"));
-
-
-
-
-
-function match(string) {
-    let state = start;
-    for(let c of string) {
-        state = state(c);
-    }
-    return state === end;
-}
-
-function start(c) {
-    if (c === "a") {
-        return foundA;
-    } else {
-        return start;
-    }
-}
-function end(c) {
-    return end;
-}
-
-function foundA(c) {
-    if (c === "b") {
-        return foundB;
-    }else {
-        return start(c);
-    }
-}
-function foundB(c) {
-    if (c === "c") {
-        return foundC;
-    }else {
-        return start(c);
-    }
-}
-function foundC(c) {
-    if (c === "a") {
-        return foundA2;
-    }else {
-        return start(c);
-    }
-}
-function foundA2(c) {
-    if (c === "b") {
-        return foundB2;
-    } else {
-        return start(c);
-    }
-}
-
-function foundB2(c) {
-    if (c === "x") {
-        return end;
-    } else {
-        return foundB(c);
-    }
-}
-console.log(match("abcabcabx"));
+// getTFTable(pat)
